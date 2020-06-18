@@ -29,6 +29,8 @@ namespace Ecommerce
             services.AddDbContext<ApplicationContext>(options => 
                options.UseSqlServer(ConnectionString)
             );
+
+            services.AddTransient<IDataService, DataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,10 +60,7 @@ namespace Ecommerce
                     pattern: "{controller=Pedido}/{action=Carrossel}/{id?}");
             });
 
-            serviceProvider
-                .GetService<ApplicationContext>()
-                .Database
-                .Migrate();
+            serviceProvider.GetService<IDataService>().inicializaDB();
         }
     }
 }

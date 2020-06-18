@@ -1,5 +1,6 @@
 ﻿using Ecommerce.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ecommerce.Repositories
 {
@@ -10,6 +11,11 @@ namespace Ecommerce.Repositories
         public ProdutoRepository(ApplicationContext contexto)
         {
             this.contexto = contexto;
+        }
+
+        public IList<Produto> GetProdutos()
+        {
+            return contexto.Set<Produto>().ToList();
         }
 
         public void SaveProdutos(List<Livro> livros)

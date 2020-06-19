@@ -25,6 +25,9 @@ namespace Ecommerce
             services.AddControllersWithViews();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+
             string ConnectionString = Configuration.GetConnectionString("Default");
 
             services.AddDbContext<ApplicationContext>(options => 
@@ -53,6 +56,8 @@ namespace Ecommerce
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseRouting();
 

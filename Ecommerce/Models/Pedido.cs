@@ -21,7 +21,6 @@ namespace Ecommerce.Models
         public List<ItemPedido> Itens { get; private set; } = new List<ItemPedido>();
         [Required]
         public virtual Cadastro Cadastro { get; private set; }
-
         public int CadastroId { get; set; }
     }
 }

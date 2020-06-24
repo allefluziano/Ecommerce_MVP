@@ -91,7 +91,7 @@
     <script type="text/javascript">
         function clickIncremento(btn) {
             var linhaDoItem = $(btn).parents('[item-id]');
-            var itemId = $(linhaDoItem).attr('idem-id');
+            var itemId = $(linhaDoItem).attr('item-id');
             var novaQtde = $(linhaDoItem).find('input').val();
 
             var data = {
@@ -102,8 +102,8 @@
             $.ajax({
                 url: '/pedido/updatequantidade',
                 type: 'POST',
-                data: JSON.stringify(data),
-                contentType: 'application/json'
+                contentType: 'application/json',
+                data: JSON.stringify(data)
             });
         }
     </script>

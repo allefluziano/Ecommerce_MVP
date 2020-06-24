@@ -17,17 +17,17 @@ namespace Ecommerce.Controllers
 
         public IActionResult Carrossel()
         {
-          return View(produtoRepository.GetProdutos());
+            return View(produtoRepository.GetProdutos());
         }
 
         public IActionResult Carrinho(string codigo)
         {
-            if(!string.IsNullOrEmpty(codigo))
+            if (!string.IsNullOrEmpty(codigo))
             {
                 pedidoRepository.AddItem(codigo);
             }
 
-            Pedido pedido = pedidoRepository.GetPedido(); 
+            Pedido pedido = pedidoRepository.GetPedido();
             return View(pedido.Itens);
         }
 
@@ -38,13 +38,12 @@ namespace Ecommerce.Controllers
 
         public IActionResult Resumo()
         {
-            Pedido pedido = pedidoRepository.GetPedido();
-            return View(pedido);
+            return View(pedidoRepository.GetPedido());
         }
 
         [HttpPost]
-        public void UpdateQuantidade([FromBody]ItemPedido itemPedido)
-                {
-                }
+        public void UpdateQuantidade([FromBody] ItemPedido itemPedido)
+        {
+        }
     }
 }

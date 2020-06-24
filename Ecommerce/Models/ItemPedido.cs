@@ -8,16 +8,16 @@ namespace Ecommerce.Models
     {
         [Required]
         [DataMember]
-        public Pedido Pedido { get; set; }
+        public Pedido Pedido { get; private set; }
         [Required]
         [DataMember]
-        public Produto Produto { get; set; }
+        public Produto Produto { get; private set; }
         [Required]
         [DataMember]
-        public int Quantidade { get; set; }
+        public int Quantidade { get; private set; }
         [Required]
         [DataMember]
-        public decimal PrecoUnitario { get; set; }
+        public decimal PrecoUnitario { get; private set; }
 
         public ItemPedido()
         {

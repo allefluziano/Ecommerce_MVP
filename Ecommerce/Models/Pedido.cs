@@ -1,5 +1,4 @@
-﻿using CasaDoCodigo.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Ecommerce.Models

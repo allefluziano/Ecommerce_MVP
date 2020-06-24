@@ -1,18 +1,23 @@
-﻿using CasaDoCodigo.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace Ecommerce.Models
 {
+    [DataContract]
     public class ItemPedido : BaseModel
     {
         [Required]
-        public Pedido Pedido { get; private set; }
+        [DataMember]
+        public Pedido Pedido { get; set; }
         [Required]
-        public Produto Produto { get; private set; }
+        [DataMember]
+        public Produto Produto { get; set; }
         [Required]
-        public int Quantidade { get; private set; }
+        [DataMember]
+        public int Quantidade { get; set; }
         [Required]
-        public decimal PrecoUnitario { get; private set; }
+        [DataMember]
+        public decimal PrecoUnitario { get; set; }
 
         public ItemPedido()
         {

@@ -1,11 +1,11 @@
 using System.Runtime.Serialization;
 
-namespace CasaDoCodigo.Models
+namespace Ecommerce.Models
 {
     [DataContract]
-    public class BaseModel
+    public abstract class BaseModel
     {
         [DataMember]
-        public int Id { get; protected set; }
+        public int Id { get; set; }
     }
 }

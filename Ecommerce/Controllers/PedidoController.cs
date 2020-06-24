@@ -2,7 +2,7 @@
 using Ecommerce.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CasaDoCodigo.Controllers
+namespace Ecommerce.Controllers
 {
     public class PedidoController : Controller
     {
@@ -41,5 +41,10 @@ namespace CasaDoCodigo.Controllers
             Pedido pedido = pedidoRepository.GetPedido();
             return View(pedido);
         }
+
+        [HttpPost]
+        public void UpdateQuantidade([FromBody]ItemPedido itemPedido)
+                {
+                }
     }
 }

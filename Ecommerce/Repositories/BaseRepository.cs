@@ -1,5 +1,4 @@
-﻿using CasaDoCodigo.Models;
-using Ecommerce.Models;
+﻿using Ecommerce.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Repositories

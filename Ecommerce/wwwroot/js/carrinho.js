@@ -1,20 +1,15 @@
 ﻿class Carrinho {
-    reloadPage() {
-        setTimeout(function () { location.reload() }, 500);
-    }
 
     clickIncremento(btn) {
         let data = this.getData(btn);
         data.Quantidade++;
         this.postQuantidade(data);
-        this.reloadPage();
     }
 
     clickDecremento(btn) {
         let data = this.getData(btn);
         data.Quantidade--;
         this.postQuantidade(data);
-        this.reloadPage();
     }
 
     updateQuantidade(input) {
@@ -39,6 +34,8 @@
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(data)
+        }).done(function (response) {
+            
         });
     }
 }

@@ -92,7 +92,7 @@ namespace Ecommerce.Repositories
                 return new UpdateQuantidadeResponse(itemPedidoDB, carrinhoViewModel);
             }
 
-            throw new ArgumentException("ItemPedido não encontrado!");
+            throw new ArgumentException("Item do Pedido não encontrado!");
         }
     }
 }

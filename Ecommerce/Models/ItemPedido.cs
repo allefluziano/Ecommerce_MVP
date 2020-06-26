@@ -19,6 +19,8 @@ namespace Ecommerce.Models
         [Required]
         [DataMember]
         public decimal PrecoUnitario { get; set; }
+        [DataMember]
+        public decimal Subtotal => Quantidade * PrecoUnitario;
 
         public ItemPedido()
         {

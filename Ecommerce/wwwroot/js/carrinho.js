@@ -1,16 +1,25 @@
 ﻿class Carrinho {
+    reloadPage() {
+        setTimeout(function () { location.reload() }, 500);
+    }
+
     clickIncremento(btn) {
         let data = this.getData(btn);
         data.Quantidade++;
-        this.postQuantidade(data);    
-        setTimeout(function () { location.reload() }, 500);
+        this.postQuantidade(data);
+        this.reloadPage();
     }
 
     clickDecremento(btn) {
         let data = this.getData(btn);
         data.Quantidade--;
         this.postQuantidade(data);
-        setTimeout(function () { location.reload() }, 500);
+        this.reloadPage();
+    }
+
+    updateQuantidade(input) {
+        let data = this.getData(input);
+        this.postQuantidade(data);
     }
 
     getData(elemento) {

@@ -1,6 +1,8 @@
 ﻿using Ecommerce.Models;
+using Ecommerce.Models.ViewModels;
 using Ecommerce.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Ecommerce.Controllers
 {
@@ -32,8 +34,9 @@ namespace Ecommerce.Controllers
                 pedidoRepository.AddItem(codigo);
             }
 
-            Pedido pedido = pedidoRepository.GetPedido();
-            return View(pedido.Itens);
+            List<ItemPedido> itens = pedidoRepository.GetPedido().Itens;
+            CarrinhoViewModel carrinhoViewModel = new CarrinhoViewModel(itens);
+            return View(carrinhoViewModel);
         }
 
         public IActionResult Cadastro()

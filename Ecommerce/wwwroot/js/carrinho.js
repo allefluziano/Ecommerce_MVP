@@ -1,13 +1,12 @@
 ﻿class Carrinho {
-
-    clickIncremento(btn) {
-        let data = this.getData(btn);
+    clickIncremento(button) {
+        let data = this.getData(button);
         data.Quantidade++;
         this.postQuantidade(data);
     }
 
-    clickDecremento(btn) {
-        let data = this.getData(btn);
+    clickDecremento(button) {
+        let data = this.getData(button);
         data.Quantidade--;
         this.postQuantidade(data);
     }
@@ -20,11 +19,11 @@
     getData(elemento) {
         let linhaDoItem = $(elemento).parents('[item-id]');
         let itemId = parseInt($(linhaDoItem).attr('item-id'));
-        let novaQtde = parseInt($(linhaDoItem).find('input').val());
+        let novaQuantidade = parseInt($(linhaDoItem).find('input').val());
 
         return {
             Id: itemId,
-            Quantidade: novaQtde
+            Quantidade: novaQuantidade
         };
     }
 

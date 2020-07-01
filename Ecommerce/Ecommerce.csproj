@@ -18,6 +18,16 @@
     <None Include="Migrations\20200617021020_Modelos.cs" />
     <None Include="Migrations\20200617021020_Modelos.Designer.cs" />
     <None Include="Migrations\ApplicationContextModelSnapshot.cs" />
+    <None Include="Views\Pedido\BuscaProdutos.cshtml" />
+    <None Include="Views\Pedido\Cadastro.cshtml" />
+    <None Include="Views\Pedido\Carrinho.cshtml" />
+    <None Include="Views\Pedido\Carrossel.cshtml" />
+    <None Include="Views\Pedido\Resumo.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
     <None Include="wwwroot\images\banner1.svg" />
     <None Include="wwwroot\images\banner2.svg" />
     <None Include="wwwroot\images\banner3.svg" />

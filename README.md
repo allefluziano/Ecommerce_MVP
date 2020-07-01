@@ -4,4 +4,4 @@
 
 ## Conceitos Utilizados
 
-*.NET Core v3.1 + MVC + EF v6.4 + Migrations*
+*.NET Core v3.1 + MVC + EF v6.4 + Migrations + Identity + SQLite*

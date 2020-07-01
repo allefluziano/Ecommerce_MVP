@@ -17,9 +17,9 @@
     }
 
     getData(elemento) {
-        let linhaDoItem = $(elemento).parents('[item-id]');
-        let itemId = parseInt($(linhaDoItem).attr('item-id'));
-        let novaQuantidade = parseInt($(linhaDoItem).find('input').val());
+        var linhaDoItem = $(elemento).parents('[item-id]');
+        var itemId = $(linhaDoItem).attr('item-id');
+        var novaQuantidade = $(linhaDoItem).find('input').val();
 
         return {
             Id: itemId,
@@ -28,7 +28,9 @@
     }
 
     postQuantidade(data) {
+
         let token = $('[name=__RequestVerificationToken]').val();
+
         let headers = {};
         headers['RequestVerificationToken'] = token;
 
@@ -40,11 +42,9 @@
             headers: headers
         }).done(function (response) {
             let itemPedido = response.itemPedido;
-            let linhaDoItem = $('[item-id= ' + itemPedido.id + ']');
-
+            let linhaDoItem = $('[item-id=' + itemPedido.id + ']')
             linhaDoItem.find('input').val(itemPedido.quantidade);
             linhaDoItem.find('[subtotal]').html((itemPedido.subtotal).duasCasas());
-
             let carrinhoViewModel = response.carrinhoViewModel;
             $('[numero-itens]').html('Total: ' + carrinhoViewModel.itens.length + ' itens');
             $('[total]').html((carrinhoViewModel.total).duasCasas());
@@ -61,10 +61,6 @@ var carrinho = new Carrinho();
 Number.prototype.duasCasas = function () {
     return this.toFixed(2).replace('.', ',');
 }
-
-
-
-
 
 
 

@@ -6,9 +6,10 @@ namespace Ecommerce.Models
     {
         public Produto()
         {
-
         }
 
+        [Required]
+        public Categoria Categoria { get; private set; }
         [Required]
         public string Codigo { get; private set; }
         [Required]
@@ -16,11 +17,12 @@ namespace Ecommerce.Models
         [Required]
         public decimal Preco { get; private set; }
 
-        public Produto(string codigo, string nome, decimal preco)
+        public Produto(string codigo, string nome, decimal preco, Categoria categoria)
         {
             this.Codigo = codigo;
             this.Nome = nome;
             this.Preco = preco;
+            this.Categoria = categoria;
         }
     }
 }

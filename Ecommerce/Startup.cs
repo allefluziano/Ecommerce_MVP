@@ -1,3 +1,4 @@
+using Ecommerce.Interfaces;
 using Ecommerce.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,10 +43,11 @@ namespace Ecommerce
             );
 
             services.AddTransient<IDataService, DataService>();
-            services.AddTransient<IProdutoRepository, ProdutoRepository>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IHttpHelper, HttpHelper>();
             services.AddTransient<IPedidoRepository, PedidoRepository>();
+            services.AddTransient<IProdutoRepository, ProdutoRepository>();
             services.AddTransient<ICadastroRepository, CadastroRepository>();
-            services.AddTransient<IItemPedidoRepository, ItemPedidoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,10 +76,11 @@ namespace Ecommerce
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Pedido}/{action=Carrossel}/{codigo?}");
+                    pattern: "{controller=Pedido}/{action=BuscaProdutos}/{codigo?}");
             });
 
-            serviceProvider.GetService<IDataService>().inicializaDB();
+            var dataService = serviceProvider.GetRequiredService<IDataService>();
+            dataService.InicializaDBAsync(serviceProvider).Wait();
         }
     }
 }

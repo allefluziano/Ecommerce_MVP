@@ -51,7 +51,8 @@ namespace Ecommerce.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Telefone")
                         .IsRequired()
@@ -64,6 +65,22 @@ namespace Ecommerce.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cadastro");
+                });
+
+            modelBuilder.Entity("Ecommerce.Models.Categoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categoria");
                 });
 
             modelBuilder.Entity("Ecommerce.Models.ItemPedido", b =>
@@ -119,6 +136,9 @@ namespace Ecommerce.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CategoriaId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Codigo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -131,6 +151,8 @@ namespace Ecommerce.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
 
                     b.ToTable("Produto");
                 });
@@ -155,6 +177,15 @@ namespace Ecommerce.Migrations
                     b.HasOne("Ecommerce.Models.Cadastro", "Cadastro")
                         .WithOne("Pedido")
                         .HasForeignKey("Ecommerce.Models.Pedido", "CadastroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Ecommerce.Models.Produto", b =>
+                {
+                    b.HasOne("Ecommerce.Models.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -1,0 +1,15 @@
+﻿using System.Collections.Generic;
+
+namespace Ecommerce.Models.ViewModels
+{
+    public class BuscaProdutosViewModel
+    {
+        public BuscaProdutosViewModel(IList<Produto> produtos, string pesquisa)
+        {
+            Produtos = produtos;
+            Pesquisa = pesquisa;
+        }
+        public IList<Produto> Produtos { get; }
+        public string Pesquisa { get; set; }
+    }
+}

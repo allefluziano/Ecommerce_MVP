@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Models;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
 
 namespace Ecommerce.Repositories
@@ -10,7 +11,7 @@ namespace Ecommerce.Repositories
     }
     public class ItemPedidoRepository : BaseRepository<ItemPedido>, IItemPedidoRepository
     {
-        public ItemPedidoRepository(ApplicationContext contexto) : base(contexto)
+        public ItemPedidoRepository(IConfiguration configuration, ApplicationContext contexto) : base(configuration, contexto)
         {
         }
 

@@ -13,6 +13,8 @@ namespace Ecommerce
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Categoria>().HasKey(t => t.Id);
+
             modelBuilder.Entity<Produto>().HasKey(t => t.Id);
 
             modelBuilder.Entity<Pedido>().HasKey(t => t.Id);

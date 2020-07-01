@@ -1,7 +1,10 @@
-﻿namespace Ecommerce
+﻿using System;
+using System.Threading.Tasks;
+
+namespace Ecommerce
 {
-    interface IDataService
+    public interface IDataService
     {
-        void inicializaDB();
+        Task InicializaDBAsync(IServiceProvider provider);
     }
 }

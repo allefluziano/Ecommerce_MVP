@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Ecommerce.Models
 {
@@ -41,6 +40,22 @@ namespace Ecommerce.Models
             this.Nome = novoCadastro.Nome;
             this.Telefone = novoCadastro.Telefone;
             this.UF = novoCadastro.UF;
+        }
+
+        public Cadastro GetClone()
+        {
+            return new Cadastro
+            {
+                Bairro = this.Bairro,
+                CEP = this.CEP,
+                Complemento = this.Complemento,
+                Email = this.Email,
+                Endereco = this.Endereco,
+                Municipio = this.Municipio,
+                Nome = this.Nome,
+                Telefone = this.Telefone,
+                UF = this.UF
+            };
         }
     }
 }

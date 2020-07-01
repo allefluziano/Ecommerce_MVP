@@ -1,90 +1,89 @@
-﻿using Ecommerce.Models;
+﻿using Ecommerce.Interfaces;
+using Ecommerce.Models;
 using Ecommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Ecommerce.Repositories
 {
-    public interface IPedidoRepository
-    {
-        Pedido GetPedido();
-        void AddItem(string codigo);
-        UpdateQuantidadeResponse UpdateQuantidade(ItemPedido itemPedido);
-        Pedido UpdateCadastro(Cadastro cadastro);
-    }
     public class PedidoRepository : BaseRepository<Pedido>, IPedidoRepository
     {
         private readonly IHttpContextAccessor contextAccessor;
-        private readonly IItemPedidoRepository itemPedidoRepository;
+        private readonly IHttpHelper httpHelper;
         private readonly ICadastroRepository cadastroRepository;
-        public PedidoRepository(
-            ApplicationContext contexto, 
+
+        public PedidoRepository(IConfiguration configuration,
+            ApplicationContext contexto,
             IHttpContextAccessor contextAccessor,
-            IItemPedidoRepository itemPedidoRepository,
-            ICadastroRepository cadastroRepository) : base(contexto)
+            IHttpHelper sessionHelper,
+            ICadastroRepository cadastroRepository) : base(configuration, contexto)
         {
             this.contextAccessor = contextAccessor;
-            this.itemPedidoRepository = itemPedidoRepository;
+            this.httpHelper = sessionHelper;
             this.cadastroRepository = cadastroRepository;
         }
 
-        public void AddItem(string codigo)
+        public async Task AddItemAsync(string codigo)
         {
-            var produto = contexto.Set<Produto>().Where(p => p.Codigo == codigo).SingleOrDefault();
+            var produto = await
+                            contexto.Set<Produto>()
+                            .Where(p => p.Codigo == codigo)
+                            .SingleOrDefaultAsync();
 
-            if(produto == null)
+            if (produto == null)
             {
-                throw new ArgumentException("Produto não encontrado!");
+                throw new ArgumentException("Produto não encontrado");
             }
 
-            var pedido = GetPedido();
-            var itemPedido = contexto.Set<ItemPedido>()
-                .Where(i => i.Produto.Codigo == codigo && i.Pedido.Id == pedido.Id)
-                .SingleOrDefault();
+            var pedido = await GetPedidoAsync();
 
-            if(itemPedido == null)
+            var itemPedido = await
+                                contexto.Set<ItemPedido>()
+                                .Where(i => i.Produto.Codigo == codigo
+                                        && i.Pedido.Id == pedido.Id)
+                                .SingleOrDefaultAsync();
+
+            if (itemPedido == null)
             {
                 itemPedido = new ItemPedido(pedido, produto, 1, produto.Preco);
-                contexto.Set<ItemPedido>().Add(itemPedido);
+                await
+                    contexto.Set<ItemPedido>()
+                    .AddAsync(itemPedido);
 
-                contexto.SaveChanges();
+                await contexto.SaveChangesAsync();
             }
         }
 
-        public Pedido GetPedido()
+        public async Task<Pedido> GetPedidoAsync()
         {
-            var pedidoId = GetPedidoId();
-            var pedido = dbSet
+            var pedidoId = httpHelper.GetPedidoId();
+            var pedido =
+                await dbSet
                 .Include(p => p.Itens)
                     .ThenInclude(i => i.Produto)
+                        .ThenInclude(prod => prod.Categoria)
                 .Include(p => p.Cadastro)
-                .Where(p => p.Id == pedidoId).SingleOrDefault();
+                .Where(p => p.Id == pedidoId)
+                .SingleOrDefaultAsync();
 
-            if(pedido == null)
+            if (pedido == null)
             {
-                pedido = new Pedido();
-                dbSet.Add(pedido);
-                contexto.SaveChanges();
-                SetPedidoId(pedido.Id);
+                pedido = new Pedido(httpHelper.GetCadastro());
+                await dbSet.AddAsync(pedido);
+                await contexto.SaveChangesAsync();
+                httpHelper.SetPedidoId(pedido.Id);
             }
 
             return pedido;
         }
 
-        private int? GetPedidoId()
+        public async Task<UpdateQuantidadeResponse> UpdateQuantidadeAsync(ItemPedido itemPedido)
         {
-            return contextAccessor.HttpContext.Session.GetInt32("pedidoId");
-        }
-
-        private void SetPedidoId(int pedidoId)
-        {
-            contextAccessor.HttpContext.Session.SetInt32("pedidoId", pedidoId);
-        }
-        public UpdateQuantidadeResponse UpdateQuantidade(ItemPedido itemPedido)
-        {
-            var itemPedidoDB = itemPedidoRepository.GetItemPedido(itemPedido.Id);
+            var itemPedidoDB = await GetItemPedidoAsync(itemPedido.Id);
 
             if (itemPedidoDB != null)
             {
@@ -92,24 +91,41 @@ namespace Ecommerce.Repositories
 
                 if (itemPedido.Quantidade == 0)
                 {
-                    itemPedidoRepository.RemoveItemPedido(itemPedido.Id);
+                    await RemoveItemPedidoAsync(itemPedido.Id);
                 }
 
-                contexto.SaveChanges();
+                await contexto.SaveChangesAsync();
 
-                var carrinhoViewModel = new CarrinhoViewModel(GetPedido().Itens);
+                var pedido = await GetPedidoAsync();
+                var carrinhoViewModel = new CarrinhoViewModel(pedido.Itens);
 
                 return new UpdateQuantidadeResponse(itemPedidoDB, carrinhoViewModel);
             }
 
-            throw new ArgumentException("Item do Pedido não encontrado!");
+            throw new ArgumentException("Item do Pedido não encontrado");
         }
 
-        public Pedido UpdateCadastro(Cadastro cadastro)
+        public async Task<Pedido> UpdateCadastroAsync(Cadastro cadastro)
         {
-            var pedido = GetPedido();
-            cadastroRepository.Update(pedido.Cadastro.Id, cadastro);
+            var pedido = await GetPedidoAsync();
+            await cadastroRepository.UpdateAsync(pedido.Cadastro.Id, cadastro);
+            httpHelper.ResetPedidoId();
+            httpHelper.SetCadastro(pedido.Cadastro);
             return pedido;
+        }
+
+        private async Task<ItemPedido> GetItemPedidoAsync(int itemPedidoId)
+        {
+            return
+            await contexto.Set<ItemPedido>()
+                .Where(ip => ip.Id == itemPedidoId)
+                .SingleOrDefaultAsync();
+        }
+
+        private async Task RemoveItemPedidoAsync(int itemPedidoId)
+        {
+            contexto.Set<ItemPedido>()
+                .Remove(await GetItemPedidoAsync(itemPedidoId));
         }
     }
 }

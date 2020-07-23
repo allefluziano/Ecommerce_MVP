@@ -79,6 +79,11 @@ namespace Ecommerce
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Pedido}/{action=BuscaProdutos}/{codigo?}");
+
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{page}");
+                    endpoints.MapRazorPages();
             });
 
             var dataService = serviceProvider.GetRequiredService<IDataService>();
